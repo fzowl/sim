@@ -8,11 +8,12 @@ import { createMongoDBConnection, sanitizeCollectionName, validatePipeline } fro
 const logger = createLogger('MongoDBExecuteAPI')
 
 const ExecuteSchema = z.object({
-  host: z.string().min(1, 'Host is required'),
-  port: z.coerce.number().int().positive('Port must be a positive integer'),
+  connectionString: z.string().optional(),
+  host: z.string().default(''),
+  port: z.coerce.number().int().nonnegative().default(27017),
   database: z.string().min(1, 'Database name is required'),
-  username: z.string().min(1, 'Username is required'),
-  password: z.string().min(1, 'Password is required'),
+  username: z.string().default(''),
+  password: z.string().default(''),
   authSource: z.string().optional(),
   ssl: z.enum(['disabled', 'required', 'preferred']).default('preferred'),
   collection: z.string().min(1, 'Collection name is required'),
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
     const pipelineDoc = JSON.parse(params.pipeline)
 
     client = await createMongoDBConnection({
+      connectionString: params.connectionString,
       host: params.host,
       port: params.port,
       database: params.database,

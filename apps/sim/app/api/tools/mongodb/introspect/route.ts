@@ -8,8 +8,9 @@ import { createMongoDBConnection, executeIntrospect } from '../utils'
 const logger = createLogger('MongoDBIntrospectAPI')
 
 const IntrospectSchema = z.object({
-  host: z.string().min(1, 'Host is required'),
-  port: z.coerce.number().int().positive('Port must be a positive integer'),
+  connectionString: z.string().optional(),
+  host: z.string().default(''),
+  port: z.coerce.number().int().nonnegative().default(27017),
   database: z.string().optional(),
   username: z.string().optional(),
   password: z.string().optional(),
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
     )
 
     client = await createMongoDBConnection({
+      connectionString: params.connectionString,
       host: params.host,
       port: params.port,
       database: params.database || 'admin',
