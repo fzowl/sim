@@ -2291,7 +2291,11 @@ import {
   veoVideoTool,
 } from '@/tools/video'
 import { visionTool, visionToolV2 } from '@/tools/vision'
-import { voyageaiEmbeddingsTool, voyageaiRerankTool } from '@/tools/voyageai'
+import {
+  voyageaiEmbeddingsTool,
+  voyageaiMultimodalEmbeddingsTool,
+  voyageaiRerankTool,
+} from '@/tools/voyageai'
 import {
   wealthboxReadContactTool,
   wealthboxReadNoteTool,
@@ -2543,6 +2547,7 @@ export const tools: Record<string, ToolConfig> = {
   vision_tool: visionTool,
   vision_tool_v2: visionToolV2,
   voyageai_embeddings: voyageaiEmbeddingsTool,
+  voyageai_multimodal_embeddings: voyageaiMultimodalEmbeddingsTool,
   voyageai_rerank: voyageaiRerankTool,
   file_parser: fileParseTool,
   file_parser_v2: fileParserV2Tool,
